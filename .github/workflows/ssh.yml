@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Install Cloudflared
         run: |
-          wget -o ./cloudflare.deb  https://github.com/cloudflare/cloudflared/releases/download/2026.3.0/cloudflared-fips-linux-amd64.deb
+          wget -O ./cloudflare.deb  https://github.com/cloudflare/cloudflared/releases/download/2026.3.0/cloudflared-fips-linux-amd64.deb
           sudo dpkg -i ./cloudflare.deb
       - name: Install Openssh
         run: |
