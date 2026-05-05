@@ -1,0 +1,30 @@
+name: Create Linux VPS (SSH)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  vps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1440
+
+    steps:
+      - name: Install Cloudflared
+        run: |
+          wget --output ./cloudflare.deb  https://github.com/cloudflare/cloudflared/releases/download/2026.3.0/cloudflared-fips-linux-amd64.deb
+          sudo apt install ./cloudflare.deb
+      - name: Install Openssh
+        run: |
+          sudo apt install -y openssh-server
+
+      - name: Start SSH session
+        run: |
+          sudo sed -i 's/^#\?Port 22/Port 9999/' /etc/ssh/sshd_config
+          sudo systemctl start ssh
+          sudo ufw allow ssh
+          cloudflared tunnel --url http://localhost:9999 &
+          sleep 15
+          echo "Success,port 9999"
+          
+
+          while true; do sleep 300; done
